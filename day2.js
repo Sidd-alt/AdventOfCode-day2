@@ -1000,27 +1000,54 @@ const dataBase = `4-7 z: zzzfzlzzz
 12-20 t: ttttttltttvttttttttt`
 
 const filterArray = dataBase.split(/\n/).map(entry=>entry.split(' '));
+DayTwoPuzzleOne = (filterArray) =>{
 
-ValidateEntry = (dataSlot) => {
-    let removeSeperator = dataSlot[0].split('-');
-    let floorValue = parseInt(removeSeperator[0]);
-    let celingValue = parseInt(removeSeperator[1]);
-    let valueChecker = dataSlot[1][0];
-    let dataToBeChecked = dataSlot[2];
-    let counter = 0;
-    for(let i=0; i<dataToBeChecked.length; i++){
-        if(valueChecker===dataToBeChecked[i]){
-            counter++;
-        }       
+    SortData = (dataSlot) => {
+        let floorValue = parseInt(dataSlot[0].split('-')[0]);
+        let celingValue = parseInt(dataSlot[0].split('-')[1]);
+        let valueChecker = dataSlot[1][0];
+        let dataToBeChecked = dataSlot[2];
+        let counter = 0;
+        
+        for(let i=0; i<dataToBeChecked.length; i++){
+            if(valueChecker===dataToBeChecked[i]){
+                counter++;
+            }       
+        }
+        if(counter>=floorValue && counter<=celingValue) return true
     }
-    if(counter>=floorValue && counter<=celingValue) return true
+    
+    let puzzleOneCounter = 0;
+    for(let i=0; i<filterArray.length; i++){
+        if(SortData(filterArray[i])){
+            puzzleOneCounter++;
+        } 
+    }
+    
+    return `Puzzle one value is ${puzzleOneCounter}`
 }
 
-let mainCounter = 0;
-for(let i=0; i<filterArray.length; i++){
-    if(ValidateEntry(filterArray[i])){
-        mainCounter++;
-    }   
-}
 
-console.log(mainCounter)
+// PART TWO 
+DayTwoPuzzleTwo = (filterArray) =>{
+   
+    SortData = (dataSlot) => {
+        
+        let floorValue = parseInt(dataSlot[0].split('-')[0]);
+        let celingValue = parseInt(dataSlot[0].split('-')[1]);
+        let valueChecker = dataSlot[1][0];
+        let dataToBeChecked = dataSlot[2];
+        
+       if((dataToBeChecked[floorValue-1]===valueChecker) &&(dataToBeChecked[celingValue-1]!=valueChecker)) return true
+       else if((dataToBeChecked[floorValue-1]!=valueChecker) &&(dataToBeChecked[celingValue-1]===valueChecker)) return true
+    }
+    
+    let puzzleTwoCounter = 0;
+    for(let i=0; i<filterArray.length; i++){
+        if(SortData(filterArray[i])){
+            puzzleTwoCounter++;
+        } 
+    }
+    
+    return `Puzzle two value is ${puzzleTwoCounter}`
+}
